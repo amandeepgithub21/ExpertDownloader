@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="image"
+        android:id="@+id/img"
+android:icon="@drawable/image_24"
+        />
+
+
+    <item android:title="video"
+        android:id="@+id/vid"
+        android:icon="@drawable/video_file_24"
+        />
+
+    <item android:title="music"
+        android:id="@+id/mus"
+        android:icon="@drawable/baseline_music_note_24"
+
+        />
+</menu>

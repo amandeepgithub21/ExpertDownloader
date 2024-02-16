@@ -1,0 +1,106 @@
+package com.example.expertdownloader;
+
+import android.app.DownloadManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Environment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+import android.media.MediaPlayer;
+import androidx.fragment.app.Fragment;
+
+import java.io.IOException;
+
+public class musicfragment extends Fragment {
+
+    private EditText editTextSongLink;
+    private Button buttonDownload;
+    private TextView textViewStatus;
+
+    private long downloadId;
+
+    // Broadcast receiver to listen for download completion
+    private BroadcastReceiver downloadReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            long receivedDownloadId = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
+            if (receivedDownloadId == downloadId) {
+                // Download completed, play the file
+                playDownloadedFile();
+            }
+        }
+    };
+
+    public musicfragment() {
+        // Required empty public constructor
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_musicfragment, container, false);
+
+        editTextSongLink = view.findViewById(R.id.editTextSongLink);
+        buttonDownload = view.findViewById(R.id.buttonDownload);
+        textViewStatus = view.findViewById(R.id.textViewStatus);
+
+        buttonDownload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                downloadAndPlay();
+            }
+        });
+
+        // Register the download receiver
+        getContext().registerReceiver(downloadReceiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+
+        return view;
+    }
+
+    @Override
+    public void onDestroy() {
+        // Unregister the receiver to avoid memory leaks
+        getContext().unregisterReceiver(downloadReceiver);
+        super.onDestroy();
+    }
+
+    private void downloadAndPlay() {
+        String songUrl = editTextSongLink.getText().toString();
+
+        // Create a request for the DownloadManager
+        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(songUrl));
+        request.setTitle("Downloading Song");
+        request.setDescription("Download in progress");
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "song.mp3");
+
+        // Get the DownloadManager service and enqueue the request
+        DownloadManager downloadManager = (DownloadManager) requireContext().getSystemService(Context.DOWNLOAD_SERVICE);
+        downloadId = downloadManager.enqueue(request);
+    }
+
+    private void playDownloadedFile() {
+        try {
+            MediaPlayer mediaPlayer = new MediaPlayer();
+            mediaPlayer.setDataSource(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/song.mp3");
+            mediaPlayer.prepare();
+            mediaPlayer.start();
+
+            // Update status
+            textViewStatus.setText("Now Playing: " + mediaPlayer.getDuration() / 1000 + "s");
+            textViewStatus.setVisibility(View.VISIBLE);
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(getContext(), "Error playing the downloaded file", Toast.LENGTH_SHORT).show();
+        }
+    }
+}

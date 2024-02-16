@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    tools:context=".musicfragment">
+    <!-- fragment_musicfragment.xml -->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+
+        <EditText
+            android:id="@+id/editTextSongLink"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Song Link"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"/>
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Download"
+            android:layout_below="@id/editTextSongLink"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="16dp"/>
+
+        <Button
+            android:id="@+id/play"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Play"
+            android:layout_below="@id/button1"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="16dp"/>
+
+        <Button
+            android:id="@+id/pause"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pause"
+            android:layout_below="@id/play"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="16dp"/>
+
+        <Button
+            android:id="@+id/forward"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Forward"
+            android:layout_below="@id/pause"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="16dp"/>
+
+        <Button
+            android:id="@+id/backward"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Backward"
+            android:layout_below="@id/forward"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="16dp"/>
+
+        <SeekBar
+            android:id="@+id/seekBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/backward"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"/>
+    </RelativeLayout>
+
+
+
+
+</FrameLayout>
